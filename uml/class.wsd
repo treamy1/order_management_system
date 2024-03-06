@@ -1,5 +1,50 @@
 @startuml design
+!pragma layout smetana
 
-left to right direction
+class User {
+    id: int
+    name: string
+    password: string
+    creationDate: datetime
+}
+
+class CustomerUser {
+    address: string
+    phone: string
+    creditCardNumber: string
+    creditCardExpirationDate: date
+    creditCardCode: string
+}
+
+class AdministratorUser {
+    + getUser()
+}
+
+class Product {
+    code: string
+    description: string
+    availability: boolean
+    price: float||double
+}
+
+class Order{
+    number: int
+    creationDate: datetime
+    items: string
+    status: string
+}
+
+class Item{
+    sequentialNumber: int
+    quantity: int
+    price: float||double
+}
+
+User <|-- CustomerUser
+User <|-- AdministratorUser
+
+Order "1" *--> "0..n" Item : items
+Item "1" --> "1" Product: Product
+
 
 @enduml
