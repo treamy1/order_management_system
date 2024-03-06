@@ -1,5 +1,11 @@
-@startuml 
+@startuml Use-Case Diagram
 
-left to right direction
+:Customer: --> (authenticate)
+:Customer: --> (place order)
+(place order) -..> (track order)
+
+:Admin: --> (authenticate)
+:Admin: --> (update order status)
+:Admin: --> (update products catalog)
 
 @enduml
