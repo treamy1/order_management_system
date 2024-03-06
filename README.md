@@ -50,11 +50,11 @@ Estimate a schedule for this project by completing the table below.
 
 |Phase|Task|Start|End|Duration|Deliverable|
 |---|---|---|---|---|---|
-|Modeling|Requirements Analysis|mm/dd/23|mm/dd/23|99 days|Use Case Diagram|
-|Modeling|Data Model|mm/dd/23|mm/dd/23|99 days|Class Diagram|
-|Construction|Coding|mm/dd/23|mm/dd/23|99 days|Code|
-|Construction|Testing|mm/dd/23|mm/dd/23|99 days|Test Report|
-|Deployment|Delivery|mm/dd/23|mm/dd/23|99 days|Final Commit/Push|
+|Modeling|Requirements Analysis|3/5/24|3/6/24|1 day|Use Case Diagram|
+|Modeling|Data Model|3/6/24|3/7/24|1 day|Class Diagram|
+|Construction|Coding|3/7/24|3/10/24|3 days|Code|
+|Construction|Testing|3/10/24|3/13/24|3 days|Test Report|
+|Deployment|Delivery|3/13/24|3/15/24|2 days|Final Commit/Push|
 
 ## Team Roles
 
