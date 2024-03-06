@@ -62,7 +62,10 @@ Assign roles for each member of the team by completing the table below. Member c
 
 |Name|Role(s)|
 |--|--|
-|name|manager,developer,tester,documenter|
+|Suar|Documenter, Developer|
+|Travis|Documenter, Developer|
+|Monica|Deverloper, Tester|
+|Yun|Manager, Tester|
 
 # Modeling Phase
 
