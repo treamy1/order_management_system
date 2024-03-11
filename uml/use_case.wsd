@@ -1,13 +1,19 @@
 @startuml Use-Case Diagram
+:User:
+:Customer:
+:Admin:
 
-:Customer: --> (authenticate)
-:Customer: --> (place order)
-(place order) -..> (track order)
+Admin <|-- User
+Customer <|-- User
 
-:Admin: --> (authenticate)
-:Admin: --> (update order status)
-:Admin: --> (update products catalog)
+package pos{
+Customer --> (authenticate)
+Customer --> (place order)
+Customer --> (track order)
 
+Admin --> (authenticate)
+Admin --> (update order status)
+(update order status) .. (track order) : includes
+Admin --> (update products catalog)
+}
 @enduml
-
-// Comment from Yun and Monica
