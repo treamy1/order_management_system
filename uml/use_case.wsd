@@ -1,19 +1,21 @@
 @startuml Use-Case Diagram
 :User:
-:Customer:
 :Admin:
+:Customer:
 
-Admin <|-- User
-Customer <|-- User
+User <|-- Admin
+User <|-- Customer
 
-package pos{
-Customer --> (authenticate)
-Customer --> (place order)
-Customer --> (track order)
-
+package OrderManager{
 Admin --> (authenticate)
 Admin --> (update order status)
-(update order status) .. (track order) : includes
 Admin --> (update products catalog)
+Admin --> (sign out)
+
+Customer --> (sign up)
+Customer --> (login)
+Customer --> (place order)
+Customer --> (track order)
+Customer --> (sign out)
 }
 @enduml
