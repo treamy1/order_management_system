@@ -1,8 +1,8 @@
 '''
 CS3250 - Software Development Methods and Tools - Spring 2024
 Instructor: Thyago Mota
-Student:
-Description: Homework 03 - Model for the SQLAlchemy Relationship Web App
+Students: Travis Reamy, Suar Martinez, Yun Chang, Monica Ball 
+Description: Project 01 - Sol Systems Order Manager
 '''
 
 from app import db 
