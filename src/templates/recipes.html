@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block main %}
-    <!-- TODO #1a: show the name of the user -->
     <p>{{ current_user.name }}'s Recipes</p>
     <table>
         <tr>
@@ -10,14 +9,13 @@
             <th>Tags#</th>
             <th>Action</th>
         </tr>
-        <!-- TODO #1b: show the user's recipes on the table -->
         {% for recipe in current_user.recipes %}
-        <tr>
+        <tr class="{% if loop.index is even %}even_row{% else %}odd_row{% endif %}">
             <td>{{ recipe.number }}</td>
             <td>{{ recipe.title }}</td>
             <td>{{ recipe.type }}</td>
             <td>{{ recipe.tags }}</td>
-            <td><button onclick="confirmed_action('{{ url_for('recipes_delete', number=recipe.number) }}')">Delete</button></td>
+            <td><button type="button" class="delete_button" onclick="confirmed_action('{{ url_for('recipes_delete', number=recipe.number) }}')">Delete</button></td>
         </tr>
         {% endfor %}
         

@@ -59,7 +59,6 @@ def signout():
 def recipes(): 
     return render_template("recipes.html", user=current_user)
 
-# TO-DO #2: get the list of recipes from the logged-in user (current_user); then, create a new recipe with the information gathered from the form and append it to the list of recipes; commit to persist the information into the database
 @app.route('/recipes/create', methods=['GET','POST'])
 @login_required
 def recipes_create():
@@ -72,7 +71,6 @@ def recipes_create():
     else:
         return render_template('recipes_create.html', form=form)
 
-# TO-DO #3: create an SQLAlchemy query to get a reference of the recipe to be deleted; then call delete (passing that reference) followed by commit
 @app.route('/recipes/<number>/delete', methods=['GET', 'POST'])
 @login_required
 def recipes_delete(number):
