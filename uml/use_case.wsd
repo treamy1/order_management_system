@@ -10,12 +10,10 @@ package OrderManager{
 Admin --> (authenticate)
 Admin --> (update order status)
 Admin --> (update products catalog)
-Admin --> (sign out)
 
 Customer --> (sign up)
 Customer --> (login)
 Customer --> (place order)
 Customer --> (track order)
-Customer --> (sign out)
 }
 @enduml
