@@ -59,7 +59,7 @@ class Item(db.Model):
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
-    user_id = db.Column(db.String, db.ForeignKey("users.code"), primary_key=True)
+    user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
     number = db.Column(db.String, primary_key=True)
     title = db.Column(db.String)
     type = db.Column(db.String)
