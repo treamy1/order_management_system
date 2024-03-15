@@ -30,6 +30,33 @@ class Customer(db.Model, UserMixin):
     credit_card_exp = db.Column(db.Date) 
     credit_card_code = db.Column(db.String)
 
+class Product(db.Model):
+    __tablename__ = 'products'
+    code = db.Column(db.String, primary_key=True)
+    description = db.Column(db.String, nullable=False)
+    availability = db.Column(db.Boolean, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    items = db.relationship('Item', backref='product', lazy=True)
+
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+    number = db.Column(db.Integer, primary_key=True)
+    creationDate = db.Column(db.DateTime, nullable=False, dafault=datetime.utcnow)
+    status = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey('user.id'), nullable=False)
+    items = db.relationship('Item', backref='order', lazy=True)
+
+
+class Item(db.Model):
+    __tablename__ = 'items'
+    id = db.Column(db.Integer, primary_key=True)
+    sequentialNumber = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    order_number = db.Column(db.Integer, db.ForeignKey('orders.number'), nullable=False)
+    product_code = db.Column(db.String, db.ForeignKey('products.code'), nullable=False)
+
 class Recipe(db.Model):
     __tablename__ = 'recipes'
     user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
