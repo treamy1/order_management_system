@@ -12,7 +12,7 @@ class Customer {
     address: string
     phone: string
     creditCardNumber: string
-    creditCardExpirationDate: date
+    creditCardExpirationDate: string
     creditCardCode: string
 }
 
@@ -28,14 +28,14 @@ class Product {
 }
 
 class Order{
-    number: int
+    number: integer
     creationDate: datetime
     status: string
 }
 
 class Item{
-    sequentialNumber: int
-    quantity: int
+    sequentialNumber: integer
+    quantity: integer
     price: double
 }
 
