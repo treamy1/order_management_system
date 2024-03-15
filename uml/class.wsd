@@ -12,7 +12,7 @@ class Customer {
     address: string
     phone: string
     creditCardNumber: string
-    creditCardExpirationDate: string
+    creditCardExpirationDate: date
     creditCardCode: string
 }
 
