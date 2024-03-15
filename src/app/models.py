@@ -7,14 +7,28 @@ Description: Project 01 - Sol Systems Order Manager
 
 from app import db 
 from flask_login import UserMixin
+from datetime import datetime, timezone
+
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String)
-    about = db.Column(db.String)
     passwd = db.Column(db.LargeBinary)
-    recipes = db.relationship("Recipe")
+    creationDate = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+
+class Admin(db.Model, UserMixin):
+    __tablename__ = 'admins'
+    admin_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+
+class Customer(db.Model, UserMixin):
+    __tablename__ = 'customers'
+    customer_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+    address = db.Column(db.String)
+    phone_num = db.Column(db.String)
+    credit_card_num = db.Column(db.String)
+    credit_card_exp = db.Column(db.Date) 
+    credit_card_code = db.Column(db.String)
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
