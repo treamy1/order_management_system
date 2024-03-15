@@ -41,16 +41,16 @@ class Product(db.Model):
 
 class Order(db.Model):
     __tablename__ = 'orders'
-    number = db.Column(db.Integer, primary_key=True)
-    creationDate = db.Column(db.DateTime, nullable=False, dafault=datetime.utcnow)
+    number = db.Column(db.Integer, db.ForeignKey("products.code"), primary_key=True)
+    creationDate = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     status = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.String, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
     items = db.relationship('Item', backref='order', lazy=True)
 
 
 class Item(db.Model):
     __tablename__ = 'items'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey("products.code"), primary_key=True)
     sequentialNumber = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -59,7 +59,7 @@ class Item(db.Model):
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
-    user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+    user_id = db.Column(db.String, db.ForeignKey("users.code"), primary_key=True)
     number = db.Column(db.String, primary_key=True)
     title = db.Column(db.String)
     type = db.Column(db.String)
