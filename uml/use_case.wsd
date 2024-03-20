@@ -1,4 +1,5 @@
 @startuml Use-Case Diagram
+!pragma layout smetana
 :User:
 :Admin:
 :Customer:
