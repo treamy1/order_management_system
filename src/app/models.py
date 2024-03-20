@@ -42,7 +42,7 @@ class Product(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     number = db.Column(db.Integer, primary_key=True)
-    creationDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    creationDate = db.Column(db.DateTime, nullable=False, dafault=datetime.utcnow)
     status = db.Column(db.String, nullable=False)
     user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
     items = db.relationship('Item', backref='order', lazy=True)
@@ -50,7 +50,7 @@ class Order(db.Model):
 
 class Item(db.Model):
     __tablename__ = 'items'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey("products.code"), primary_key=True)
     sequentialNumber = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
