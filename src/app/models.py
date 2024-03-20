@@ -15,8 +15,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String)
     passwd = db.Column(db.LargeBinary)
-    creationDate = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
-
+    #creationDate = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+    
 class Admin(db.Model, UserMixin):
     __tablename__ = 'admins'
     admin_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
@@ -42,9 +42,9 @@ class Product(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     number = db.Column(db.Integer, primary_key=True)
-    creationDate = db.Column(db.DateTime, nullable=False, dafault=datetime.utcnow)
+    creationDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.String, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
     items = db.relationship('Item', backref='order', lazy=True)
 
 

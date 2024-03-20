@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block main %}
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <p>{{ form.number.label }} <br> {{ form.number(size=10) }}</p>
+            <p>{{form.creationDate.label}} <br> {{form.creationDate(size=50)}}</p>
+            <p>{{form.status.label}} <br> {{form.status}}</p>
+            <p>{{form.items.label}} <br> {{form.items(size=50)}}</p>
+            <p>{{ form.submit() }}</p>
+        </form>
+{% endblock %}
