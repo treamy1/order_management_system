@@ -6,15 +6,17 @@ Description: Project 01 - Sol Systems Order Manager
 '''
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 import os
+import bcrypt
 
 app = Flask("Authentication Web App")
 app.secret_key = 'do not share'
-app.config['USER SIGN UP']= 'User Sign Up"'
-app.config['USER SIGNIN']= 'User Sign In"'
+app.config['USER SIGN UP'] = 'User Sign Up'
+app.config['USER SIGNIN'] = 'User Sign In'
 
 # db initialization
-from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db.init_app(app)
@@ -23,7 +25,6 @@ db.init_app(app)
 from app import models
 
 # login manager
-from flask_login import LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -40,6 +41,19 @@ def load_user(id):
 # import routes after initializing login_manager
 from app import routes
 
-# create the database
-with app.app_context(): 
+# create the database and add admin user if not exists
+with app.app_context():
     db.create_all()
+
+    # Check if admin user exists
+    admin_user = User.query.filter_by(id='tmota').first()
+    if not admin_user:
+        hashed_password = bcrypt.hashpw('1'.encode('utf-8'), bcrypt.gensalt())
+        admin_user = User(
+            id='tmota',
+            name='Mota',
+            passwd=hashed_password,
+            # creation_date is automatically set to the current timestamp
+        )
+        db.session.add(admin_user)
+        db.session.commit()
