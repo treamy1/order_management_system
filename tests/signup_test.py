@@ -36,3 +36,6 @@ class SignupTestCase(unittest.TestCase):
         response = self.app.post('/users/signup', data=dict(id='test', name='Test User', passwd='test'), follow_redirects=True)
         self.assertEqual(response.status_code, 302) # Check if the status code is 200, which means the signup was unsuccessful
         self.assertIn(b'User already exists', response.data)  # Check if 'User already exists' message is present in the response
+
+if __name__ == '__main__':
+    unittest.main(start_dir='src')

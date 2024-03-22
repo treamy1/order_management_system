@@ -36,5 +36,5 @@ class LoginTestCase(unittest.TestCase):
         self.assertIn(b'Invalid ID or password', response.data)  # Check if 'Invalid ID or password' message is present in the response
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(start_dir='src')
 
