@@ -36,13 +36,6 @@ class OrderForm(FlaskForm):
     credit_card_code = StringField('Credit Card Security Code', validators=[DataRequired()])
     
     submit = SubmitField('Submit')
-    
-class RecipeForm(FlaskForm):
-    number = StringField('Recipe#', validators=[DataRequired()])
-    title = StringField('Title', validators=[DataRequired()])
-    type = SelectField('Type', choices=['breakfast', 'appetizer', 'side dish', 'main course', 'dessert'], validators=[DataRequired()])
-    tags = StringField('Tags')
-    submit = SubmitField('Submit')
 
 class ProductForm(FlaskForm):
     code = StringField('Code', validators=[DataRequired()])

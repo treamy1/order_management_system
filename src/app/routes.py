@@ -6,8 +6,8 @@ Description: Project 01 - Sol Systems Order Manager
 '''
 
 from app import app, db, load_user
-from app.models import User, Recipe, Order, Product, Customer, Administrator, Item
-from app.forms import SignUpForm, LoginForm, RecipeForm, OrderForm, ProductForm
+from app.models import User, Order, Product, Customer, Administrator, Item
+from app.forms import SignUpForm, LoginForm, OrderForm, ProductForm
 from datetime import datetime, timezone
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_required, login_user, logout_user, current_user
@@ -163,8 +163,6 @@ def orders_create():
 
 
 
-
-
 @app.route('/orders/<int:number>/delete', methods=['GET', 'POST'])
 @login_required
 def orders_delete(number):
@@ -225,40 +223,7 @@ def delete_product(code):
     flash('Product deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
-
-
-
-
 # function to handle login/signup failed
 @app.route('/users/login_failed')
 def login_failed():
     return render_template('login_failed.html')
-
-
-@app.route('/recipes')
-@login_required
-def recipes(): 
-    return render_template("recipes.html", user=current_user)
-
-@app.route('/recipes/create', methods=['GET','POST'])
-@login_required
-def recipes_create():
-    form = RecipeForm()
-    if form.validate_on_submit():
-        new_recipe = Recipe(user_id=current_user.id, number=form.number.data, title=form.title.data, type=form.type.data, tags=form.tags.data)
-        db.session.add(new_recipe)
-        db.session.commit()
-        return redirect(url_for('recipes'))
-    else:
-        return render_template('recipes_create.html', form=form)
-
-@app.route('/recipes/<number>/delete', methods=['GET', 'POST'])
-@login_required
-def recipes_delete(number):
-    recipe_to_delete = Recipe.query.filter_by(number=number, user_id=current_user.id).first()
-    if recipe_to_delete:
-        db.session.delete(recipe_to_delete)
-        db.session.commit()
-    return redirect(url_for('recipes'))
-
-

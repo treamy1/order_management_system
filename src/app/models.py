@@ -73,12 +73,3 @@ class Item(db.Model):
     product_code = db.Column(db.String, db.ForeignKey('products.code'))
     # relationship with order
     order_number = db.Column(db.Integer, db.ForeignKey('orders.number'))
-
-class Recipe(db.Model):
-    __tablename__ = 'recipes'
-    # relationship with user
-    user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
-    number = db.Column(db.String, primary_key=True)
-    title = db.Column(db.String)
-    type = db.Column(db.String)
-    tags = db.Column(db.String)
