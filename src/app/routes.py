@@ -59,13 +59,16 @@ def login():
 
     adminUser = User.query.filter_by(id='tmota').first()
     admin_id = adminUser.id
-    
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(id=form.id.data).first()
         if user and bcrypt.checkpw(form.passwd.data.encode('utf-8'), user.passwd):
             login_user(user)
             if user.id in admin_id:  # Check if user ID is in admin_id list
+
+                # print(adminUser.creation_date)
+                
                 return redirect(url_for('admin'))  # Redirect admin to admin page
             else:
                 return redirect(url_for('orders'))  # Redirect regular user to orders page
