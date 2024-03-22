@@ -14,10 +14,10 @@ class LoginTestCase(unittest.TestCase):
         self.app_context.push()
 
         # Create a test user
-        self.user = User(id='test', name='Test User', passwd=bcrypt.hashpw('test'.encode('utf-8'), bcrypt.gensalt()))
+        self.user = User(id='test', name='Test User', passwd='test')
         db.session.add(self.user)  # Add the test user to the database
         db.session.commit()  # Commit the changes
-        
+
     def tearDown(self):
         db.session.delete(self.user)  # Remove the test user from the database
         db.session.commit()
