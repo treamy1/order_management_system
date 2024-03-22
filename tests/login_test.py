@@ -26,12 +26,12 @@ class LoginTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_login(self):
-        response = self.app.post('/users/login', data=dict(id='test', passwd='test'), follow_redirects=True)
+        response = self.app.post('/users/login', data=dict(id='test', passwd='test'))#, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Logged in successfully', response.data)  # Check if 'Logged in successfully' message is present in the response
 
     def test_incorrect_login(self):
-        response = self.app.post('/users/login', data=dict(id='test', passwd='wrong'), follow_redirects=True)
+        response = self.app.post('/users/login', data=dict(id='test', passwd='wrong'))#, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Invalid ID or password', response.data)  # Check if 'Invalid ID or password' message is present in the response
 
