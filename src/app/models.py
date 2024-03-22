@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from app import db
 from datetime import datetime
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String)
@@ -49,17 +49,18 @@ class Product(db.Model):
 
 class Order(db.Model):
     __tablename__ = 'orders'
-    order_id = db.Column(db.String, db.ForeignKey('users.id'))
-
     number = db.Column(db.Integer, primary_key=True)
     creation_date = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.String)
-    
+
+    user_id = db.Column(db.String, db.ForeignKey('users.id'))
+
     # Define relationship with User
     user = db.relationship('User', backref='orders', lazy=True)
 
     # Define relationship with Item
     items = db.relationship('Item', backref='order', lazy=True)
+
 
 class Item(db.Model):
     __tablename__ = 'items'
