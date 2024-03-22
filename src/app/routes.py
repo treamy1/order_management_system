@@ -7,7 +7,7 @@ Description: Project 01 - Sol Systems Order Manager
 
 from app import app, db, load_user
 from app.models import User, Recipe, Order, Product, Customer, Administrator, Item
-from app.forms import SignUpForm, LoginForm, RecipeForm, OrderForm
+from app.forms import SignUpForm, LoginForm, RecipeForm, OrderForm, ProductForm
 from datetime import datetime, timezone
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_required, login_user, logout_user, current_user
@@ -48,11 +48,27 @@ def admin():
 
     adminUser = User.query.filter_by(id='tmota').first()
     admin_id = adminUser.id
+    orders = Order.query.all()
+    products = Product.query.all()  # Retrieve all products from the database
 
     if current_user.id in admin_id:  # Check if current user is an admin
-        return render_template('admin.html', admin=current_user)
+        return render_template('admin.html', admin=current_user, orders=orders, products=products)
     else:
         return redirect(url_for('index'))
+    
+@app.route('/admin/order/<int:order_number>/update', methods=['POST'])
+@login_required
+def update_order_status(order_number):
+    order = Order.query.filter_by(number=order_number).first()
+    if order:
+        order.status = request.form['status']
+        db.session.commit()
+        flash('Order status updated successfully!', 'success')
+    else:
+        flash('Order not found.', 'error')
+    
+    return redirect(url_for('admin'))
+
     
 @app.route('/users/login', methods=['GET', 'POST'])
 def login():
@@ -82,7 +98,6 @@ def signout():
     return redirect(url_for('index'))
 
 
-
 @app.route('/orders')
 @login_required
 def orders():
@@ -95,34 +110,57 @@ def orders():
 def orders_create():
     form = OrderForm()  # Initialize the form here
     products = Product.query.all()
+
+    # Check if the current user already has a customer record
+    existing_customer = Customer.query.filter_by(customer_id=current_user.id).first()
+
     if request.method == 'POST':
-        print("POST REQUEST HERE!!!")
+        # Only create a new customer if one doesn't exist
+        if not existing_customer:
+            customer = Customer(
+                customer_id=current_user.id,
+                address=form.address.data,
+                phone=form.phone.data,
+                credit_card_number=form.credit_card_number.data,
+                credit_card_exp_date=form.credit_card_exp_date.data,
+                credit_card_code=form.credit_card_code.data
+            )
+            db.session.add(customer)
+
         # Create a new order instance
         new_order = Order(
             creation_date=datetime.utcnow(),
-            status='new',  # or use a form field to set this
+            status='new',
             user_id=current_user.id
         )
         db.session.add(new_order)
         db.session.flush()  # To get the new_order.id for foreign key reference
 
         # Process each product's quantity from the form
+        seq_number = 1
+        total_price = 0
         for product in products:
             quantity = int(request.form.get(f'quantity_{product.code}', 0))
-            if quantity > 0:  # Add only products that have been selected
+            total_price += quantity * product.price
+
+            for _ in range(quantity):  # Loop based on the quantity to create individual item instances
                 item = Item(
+                    sequential_number=seq_number,
                     order_number=new_order.number,
                     product_code=product.code,
-                    quantity=quantity,
-                    price=product.price  # Or calculate based on quantity if needed
+                    quantity=1,  # Since you are creating an instance per unit, quantity is always 1
+                    price=product.price
                 )
                 db.session.add(item)
+                seq_number += 1
 
         db.session.commit()
         print('Order created successfully!', 'success')
         return redirect(url_for('orders'))
 
-    return render_template('orders_create.html', form=form, products=products)
+    # If GET request or not yet posted, render the form
+    return render_template('orders_create.html', form=form, products=products, existing_customer=existing_customer)
+
 
 
 
@@ -140,6 +178,53 @@ def orders_delete(number):
         print('Order not found or you do not have permission to delete it.', 'error')
     
     return redirect(url_for('orders'))
+
+
+@app.route('/admin/product/add', methods=['GET', 'POST'])
+@login_required
+def add_product():
+    form = ProductForm()
+    if form.validate_on_submit():
+        product = Product(
+            code=form.code.data,
+            description=form.description.data,
+            availability=form.availability.data,
+            price=form.price.data
+        )
+        db.session.add(product)
+        try:
+            db.session.commit()
+            flash('Product added successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error adding product: ' + str(e), 'error')
+        return redirect(url_for('admin'))
+    return render_template('product_form.html', form=form, title="Add Product")
+
+@app.route('/admin/product/edit/<code>', methods=['GET', 'POST'])
+@login_required
+def edit_product(code):
+    product = Product.query.get_or_404(code)
+    form = ProductForm(obj=product)
+    if form.validate_on_submit():
+        product.code = form.code.data
+        product.description = form.description.data
+        product.availability = form.availability.data
+        product.price = form.price.data
+        db.session.commit()
+        flash('Product updated successfully!', 'success')
+        return redirect(url_for('admin'))
+    return render_template('product_form.html', form=form, title="Edit Product")
+
+@app.route('/admin/product/delete/<code>', methods=['POST'])
+@login_required
+def delete_product(code):
+    product = Product.query.get_or_404(code)
+    db.session.delete(product)
+    db.session.commit()
+    flash('Product deleted successfully!', 'success')
+    return redirect(url_for('admin'))
+
 
 
 

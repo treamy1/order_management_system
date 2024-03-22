@@ -6,16 +6,16 @@
         {{ form.hidden_tag() }}
         <table>
             <tr>
-                <th>Description</th>
                 <th>Code</th>
+                <th>Description</th>
                 <th>Price</th>
                 <th>Available</th>
                 <th>Quantity</th>
             </tr>
             {% for product in products %}
             <tr>
-                <td>{{ product.description }}</td>
                 <td>{{ product.code }}</td>
+                <td>{{ product.description }}</td>
                 <td>${{ product.price }}</td>
                 <td>{{ 'Yes' if product.availability else 'No' }}</td>
                 <td>
@@ -35,6 +35,31 @@
             </tr>
             {% endfor %}
         </table>
+
+        {{ form.hidden_tag() }}
+            {% if not customer_exists %}
+            <div>
+                <label for="address">Address:</label>
+                {{ form.address }}
+            </div>
+            <div>
+                <label for="phone">Phone:</label>
+                {{ form.phone }}
+            </div>
+            <div>
+                <label for="credit_card_number">Credit Card Number:</label>
+                {{ form.credit_card_number }}
+            </div>
+            <div>
+                <label for="credit_card_exp_date">Credit Card Expiry Date:</label>
+                {{ form.credit_card_exp_date }}
+            </div>
+            <div>
+                <label for="credit_card_code">Credit Card Security Code:</label>
+                {{ form.credit_card_code }}
+            </div>
+            {% endif %}
+
         <p><input type="submit" value="Create Order"></p>
     </form>
 </div>

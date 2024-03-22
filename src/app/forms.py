@@ -6,7 +6,7 @@ Description: Project 01 - Sol Systems Order Manager
 '''
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SelectField, SubmitField, validators
+from wtforms import StringField, PasswordField, TextAreaField, SelectField, SubmitField, validators, FloatField, BooleanField
 from wtforms.validators import DataRequired
 
 class SignUpForm(FlaskForm):
@@ -28,6 +28,13 @@ class OrderForm(FlaskForm):
     creationDate = StringField('Creation Date', validators=[DataRequired()])
     status = SelectField('Status', choices=['new', 'in progress', 'completed'], validators=[DataRequired()])
     items = StringField('Items', validators=[DataRequired()])
+
+    address = StringField('Address', validators=[DataRequired()])
+    phone = StringField('Phone', validators=[DataRequired()])
+    credit_card_number = StringField('Credit Card Number', validators=[DataRequired()])
+    credit_card_exp_date = StringField('Credit Card Expiry Date', validators=[DataRequired()])
+    credit_card_code = StringField('Credit Card Security Code', validators=[DataRequired()])
+    
     submit = SubmitField('Submit')
     
 class RecipeForm(FlaskForm):
@@ -35,4 +42,11 @@ class RecipeForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     type = SelectField('Type', choices=['breakfast', 'appetizer', 'side dish', 'main course', 'dessert'], validators=[DataRequired()])
     tags = StringField('Tags')
+    submit = SubmitField('Submit')
+
+class ProductForm(FlaskForm):
+    code = StringField('Code', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    availability = BooleanField('Availability')
+    price = FloatField('Price', validators=[DataRequired()])
     submit = SubmitField('Submit')

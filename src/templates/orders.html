@@ -19,7 +19,9 @@
                 <p>{{ item.product_code }} - Qty: {{ item.quantity }} - Price: ${{ item.price }}</p>
             {% endfor %}
         </td>
-        <td><button type="button" class="delete_button" onclick="confirmed_action('{{ url_for('orders_delete', number=order.number) }}')">Delete</button></td>
+        <td>
+            <button type="button" class="delete_button" onclick="confirmed_action('{{ url_for('orders_delete', number=order.number) }}')">Delete</button>
+        </td>
     </tr>
     {% endfor %}
 </table>

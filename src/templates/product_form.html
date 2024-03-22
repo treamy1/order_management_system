@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.code.label }}<br>
+        {{ form.code(size=32) }}
+    </p>
+    <p>
+        {{ form.description.label }}<br>
+        {{ form.description(size=32) }}
+    </p>
+    <p>
+        {{ form.availability.label }}<br>
+        {{ form.availability() }}
+    </p>
+    <p>
+        {{ form.price.label }}<br>
+        {{ form.price(size=32) }}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}
