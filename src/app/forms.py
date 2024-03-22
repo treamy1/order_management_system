@@ -25,7 +25,7 @@ class LoginForm(FlaskForm):
 # working on for order form with routes currently.
 class OrderForm(FlaskForm):
     number = StringField('Order#', validators=[DataRequired()])
-    creationDate = StringField('Creation Date', validators=[DataRequired()])
+    #creationDate = StringField('Creation Date', validators=[DataRequired()])
     status = SelectField('Status', choices=['new', 'in progress', 'completed'], validators=[DataRequired()])
     items = StringField('Items', validators=[DataRequired()])
     submit = SubmitField('Submit')

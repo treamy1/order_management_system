@@ -6,7 +6,7 @@ Description: Project 01 - Sol Systems Order Manager
 '''
 
 from app import app, db, load_user
-from app.models import User, Recipe, Order
+from app.models import User, Recipe, Order, Product, Customer, Administrator
 from app.forms import SignUpForm, LoginForm, RecipeForm, OrderForm
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_required, login_user, logout_user, current_user
