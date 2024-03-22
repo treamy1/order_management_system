@@ -49,7 +49,7 @@ with app.app_context():
     from app.models import Product
 
     items = [
-    {'code': '101', 'description': '6x8 monocrystalline cell panel, 240W', 'available': False, 'price': 150.00},
+    {'code': '101', 'description': '6x8 monocrystalline cell panel, 240W', 'available': True, 'price': 150.00},
     {'code': '202', 'description': '6x10 monocrystalline cell panel, 310W', 'available': True, 'price': 300.00},
     {'code': '303', 'description': '6x12 monocrystalline cell panel, 400W', 'available': True, 'price': 450.00}
     ]
