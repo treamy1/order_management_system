@@ -45,6 +45,30 @@ from app import routes
 with app.app_context():
     db.create_all()
 
+    from app import db
+    from app.models import Product
+
+    items = [
+    {'code': '101', 'description': '6x8 monocrystalline cell panel, 240W', 'available': False, 'price': 150.00},
+    {'code': '202', 'description': '6x10 monocrystalline cell panel, 310W', 'available': True, 'price': 300.00},
+    {'code': '303', 'description': '6x12 monocrystalline cell panel, 400W', 'available': True, 'price': 450.00}
+    ]
+
+    for item in items:
+        # Check if the product already exists to avoid duplicate entries
+        existing_product = Product.query.filter_by(code=item['code']).first()
+        if not existing_product:
+            product = Product(
+                code=item['code'],
+                description=item['description'],
+                availability=item['available'],
+                price=item['price']
+            )
+            db.session.add(product)
+
+    # Commit once outside the loop to save all new products to the database
+    db.session.commit()
+
     # Check if admin user exists
     admin_user = User.query.filter_by(id='tmota').first()
     if not admin_user:

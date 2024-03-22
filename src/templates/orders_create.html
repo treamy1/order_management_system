@@ -1,11 +1,41 @@
 {% extends 'base.html' %}
 {% block main %}
-        <form action="" method="POST" novalidate>
-            {{ form.hidden_tag() }}
-            <p>{{ form.number.label }} <br> {{ form.number(size=10) }}</p>
-            <p>{{form.creationDate.label}} <br> {{form.creationDate(size=50)}}</p>
-            <p>{{form.status.label}} <br> {{form.status}}</p>
-            <p>{{form.items.label}} <br> {{form.items(size=50)}}</p>
-            <p>{{ form.submit() }}</p>
-        </form>
+<div class="product-list">
+    <h2>Products</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <table>
+            <tr>
+                <th>Description</th>
+                <th>Code</th>
+                <th>Price</th>
+                <th>Available</th>
+                <th>Quantity</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.description }}</td>
+                <td>{{ product.code }}</td>
+                <td>${{ product.price }}</td>
+                <td>{{ 'Yes' if product.availability else 'No' }}</td>
+                <td>
+                    {% if product.availability %}
+                    <select name="quantity_{{ product.code }}">
+                        <option value="0">0</option> <!-- Add option for 0 quantity -->
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    {% else %}
+                    <select name="quantity_{{ product.code }}" disabled>
+                        <option value="0">0</option>
+                    </select>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><input type="submit" value="Create Order"></p>
+    </form>
+</div>
 {% endblock %}
