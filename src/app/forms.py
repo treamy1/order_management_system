@@ -22,7 +22,7 @@ class LoginForm(FlaskForm):
     passwd = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Confirm')
 
-# working on for order form with routes currently.
+# working on for order form with routes currently!
 class OrderForm(FlaskForm):
     number = StringField('Order#', validators=[DataRequired()])
     creationDate = StringField('Creation Date', validators=[DataRequired()])
