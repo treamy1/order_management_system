@@ -68,7 +68,7 @@ def login():
             if user.id in admin_id:  # Check if user ID is in admin_id list
 
                 # print(adminUser.creation_date)
-                
+
                 return redirect(url_for('admin'))  # Redirect admin to admin page
             else:
                 return redirect(url_for('orders'))  # Redirect regular user to orders page
