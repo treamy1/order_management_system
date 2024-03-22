@@ -14,8 +14,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 import bcrypt
 
 
-# # admin id's
-# admin_id = ['tmota', 'treamy']
+
             
 @app.route('/')
 @app.route('/index')
@@ -46,6 +45,10 @@ def signup():
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin():
+
+    adminUser = User.query.filter_by(id='tmota').first()
+    admin_id = adminUser.id
+
     if current_user.id in admin_id:  # Check if current user is an admin
         return render_template('admin.html', admin=current_user)
     else:
@@ -53,6 +56,10 @@ def admin():
     
 @app.route('/users/login', methods=['GET', 'POST'])
 def login():
+
+    adminUser = User.query.filter_by(id='tmota').first()
+    admin_id = adminUser.id
+    
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(id=form.id.data).first()
