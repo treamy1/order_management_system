@@ -10,55 +10,72 @@ from flask_login import UserMixin
 from datetime import datetime, timezone
 
 
-class User(db.Model, UserMixin):
+from app import db
+from datetime import datetime
+
+class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String)
-    passwd = db.Column(db.LargeBinary)
-    #creationDate = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
-    
-class Admin(db.Model, UserMixin):
-    __tablename__ = 'admins'
-    admin_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+    passwd = db.Column(db.String)
+    creation_date = db.Column(db.DateTime, default=datetime.utcnow)
 
-class Customer(db.Model, UserMixin):
+class Customer(db.Model):
     __tablename__ = 'customers'
-    customer_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
+    customer_id = db.Column(db.String, db.ForeignKey('users.id'), primary_key=True)
+
     address = db.Column(db.String)
-    phone_num = db.Column(db.String)
-    credit_card_num = db.Column(db.String)
-    credit_card_exp = db.Column(db.Date) 
+    phone = db.Column(db.String)
+    credit_card_number = db.Column(db.String)
+    credit_card_exp_date = db.Column(db.String)  # Assuming string format for expiration date
     credit_card_code = db.Column(db.String)
+
+    # Define relationship with User
+    user = db.relationship('User', backref='customer', lazy=True)
+
+class Administrator(db.Model):
+    __tablename__ = 'administrators'
+    admin_id = db.Column(db.String, db.ForeignKey('users.id'), primary_key=True)
+
+    # Define relationship with User
+    user = db.relationship('User', backref='administrator', lazy=True)
 
 class Product(db.Model):
     __tablename__ = 'products'
     code = db.Column(db.String, primary_key=True)
-    description = db.Column(db.String, nullable=False)
-    availability = db.Column(db.Boolean, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    items = db.relationship('Item', backref='product', lazy=True)
-
+    description = db.Column(db.String)
+    availability = db.Column(db.Boolean) # true/false
+    price = db.Column(db.Float)
 
 class Order(db.Model):
     __tablename__ = 'orders'
-    number = db.Column(db.Integer, primary_key=True)
-    creationDate = db.Column(db.DateTime, nullable=False, dafault=datetime.utcnow)
-    status = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
-    items = db.relationship('Item', backref='order', lazy=True)
+    order_id = db.Column(db.String, db.ForeignKey('users.id'))
 
+    number = db.Column(db.Integer, primary_key=True)
+    creation_date = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String)
+    
+    # Define relationship with User
+    user = db.relationship('User', backref='orders', lazy=True)
+
+    # Define relationship with Item
+    items = db.relationship('Item', backref='order', lazy=True)
 
 class Item(db.Model):
     __tablename__ = 'items'
-    id = db.Column(db.Integer, db.ForeignKey("products.code"), primary_key=True)
-    sequentialNumber = db.Column(db.Integer, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    order_number = db.Column(db.Integer, db.ForeignKey('orders.number'), nullable=False)
-    product_code = db.Column(db.String, db.ForeignKey('products.code'), nullable=False)
+    item_id = db.Column(db.Integer, primary_key=True) # create primary key for items
+    sequential_number = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+    price = db.Column(db.Float)
+
+    # relationship with product
+    product_code = db.Column(db.String, db.ForeignKey('products.code'))
+    # relationship with order
+    order_number = db.Column(db.Integer, db.ForeignKey('orders.number'))
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
+    # relationship with user
     user_id = db.Column(db.String, db.ForeignKey("users.id"), primary_key=True)
     number = db.Column(db.String, primary_key=True)
     title = db.Column(db.String)

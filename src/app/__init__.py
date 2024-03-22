@@ -19,9 +19,8 @@ db = SQLAlchemy()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db.init_app(app)
 
+# import models after initializing db
 from app import models
-with app.app_context(): 
-    db.create_all()
 
 # login manager
 from flask_login import LoginManager
@@ -38,4 +37,9 @@ def load_user(id):
     except: 
         return None
 
+# import routes after initializing login_manager
 from app import routes
+
+# create the database
+with app.app_context(): 
+    db.create_all()
