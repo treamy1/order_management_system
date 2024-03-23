@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block main %}
+    <h1>Welcome! You are logged in as admin.</h1>
+
+    <h2>Orders Overview</h2>
+    <table>
+        <tr>
+            <th>Order Number</th>
+            <th>User Name</th>
+            <th>User ID</th>
+            <th>Order Details</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.number }}</td>
+            <td>{{ order.user.name }}</td>
+            <td>{{ order.user.id }}</td>
+            <td>
+                {% for item in order.items %}
+                    Product Code: {{ item.product_code }}, Quantity: {{ item.quantity }}<br>
+                {% endfor %}
+            </td>
+            <td>{{ order.status }}</td>
+            <td>
+                <form action="{{ url_for('update_order_status', order_number=order.number) }}" method="POST">
+                    <select name="status">
+                        {% set statuses = ['New', 'Accepted', 'Delivered', 'Completed'] %}
+                        {% for status in statuses %}
+                            <option value="{{ status }}" {% if order.status == status %}selected{% endif %}>{{ status }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Update">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <h2>Product Management</h2>
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th>Availability</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.code }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.availability }}</td>
+            <td>{{ product.price }}</td>
+            <td>
+                <a href="{{ url_for('edit_product', code=product.code) }}">Edit</a>
+                <form action="{{ url_for('delete_product', code=product.code) }}" method="post" style="display: inline;">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div>
+        <a href="{{ url_for('add_product') }}" class="button">Add Product</a>
+        <a href="{{ url_for('signout') }}" class="button">Sign Out</a>
+    </div>
+
+
+{% endblock %}
